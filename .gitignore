@@ -1,0 +1,12 @@
+# Compiled files
+*.o
+*.out
+*.exe
+graph
+
+# macOS
+.DS_Store
+
+# Editor settings
+.vscode/
+
