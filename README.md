@@ -15,16 +15,15 @@ A C++ project of a graph data structure, designed for academic use and experimen
 
 ## 📂 Project Structure
 
-Graph/
-├── README.md
-├── .gitignore
-├── src/
-│ ├── Matrix_Implementation_Graph.cpp
-│ ├── Matrix_Implementation_Graph.h
-│ ├── List_Implementation_Graph.cpp
-│ ├── List_Implementation_Graph.h
-│ └── main.cpp
-└── Makefile
+- `README.md` — Project overview and instructions  
+- `.gitignore` — Specifies files to be ignored by Git  
+- `Makefile` — Build and clean commands  
+- `src/` — Contains all source code files:  
+  - `main.cpp`  
+  - `Matrix_Implementation_Graph.cpp`  
+  - `Matrix_Implementation_Graph.h`  
+  - `List_Implementation_Graph.cpp`  
+  - `List_Implementation_Graph.h` 
 
 
 - **`src/`**: Contains all source code files.  
