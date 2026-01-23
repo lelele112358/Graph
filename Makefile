@@ -4,12 +4,12 @@ CXXFLAGS = -Wall -Wextra -std=c++17
 
 # Source files
 SRC = src/main.cpp \
-      src/Graph_Implementation_Selector.cpp \
+      src/GraphFactory.cpp \
+      src/Graph_Bipartite.cpp \
       src/Matrix_Implementation_Graph.cpp \
       src/List_Implementation_Graph.cpp
 
-
-# Object files (replace .cpp with .o)
+# Object files
 OBJ = $(SRC:.cpp=.o)
 
 # Output executable

@@ -1,39 +1,41 @@
-/*
- * Matrix_Implementation_Graph.h
- *
- * Description:
- *  This header file declares the MatrixGraph class, which represents a graph
- *  using a V x V adjacency matrix.
- *
- *  - Encapsulates internal data:
- *      * V: number of vertices
- *      * E: number of edges
- *      * directed: true if the graph is directed
- *      * matrix: pointer to the dynamically allocated adjacency matrix
- *  - Provides methods to:
- *      * addEdge(int u, int v): Adds an edge to the graph.
- *      * display(): Prints the adjacency matrix.
- *      * verifyUndirectedInvariants(): Ensures symmetry and no self-loops in undirected graphs.
- */
+/* ****
+*   File: Matrix_Implementation_Graph.h
+*   Description: Header file for MatrixGraph class implementing a graph
+*                using an adjacency matrix. Provides methods for adding edges,
+*                displaying the graph, and accessing neighbors.
+**** */
+
 #ifndef MATRIX_IMPLEMENTATION_GRAPH_H
 #define MATRIX_IMPLEMENTATION_GRAPH_H
 
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+/* ---------- MatrixGraph Class ---------- */
+// Graph implementation using adjacency matrix
 class MatrixGraph {
 private:
-    int V;       // number of vertices
-    int E;       // number of edges
-    bool directed;
-    int** matrix;
+    int V;                          // Number of vertices
+    bool directed;                  // True if graph is directed
+    vector<vector<int>> matrix;     // Adjacency matrix
 
-    bool isValidVertex(int v) const;
+    // Helper function
+    bool isValidVertex(int v) const; // Check if vertex is valid
 
 public:
+    // Constructor
     MatrixGraph(int vertices, bool isDirected);
-    ~MatrixGraph();
 
-    bool addEdge(int u, int v);
-    void display() const;
-    void verifyUndirectedInvariants() const;
+    // Core graph operations
+    bool addEdge(int u, int v);      // Add edge u -> v
+    void display() const;            // Display adjacency matrix
+
+    // Accessors needed by adapters / algorithms
+    int getVertexCount() const;       // Return number of vertices
+    bool isDirected() const;          // Return if graph is directed
+    vector<int> getNeighbors(int u) const; // Return neighbors of vertex u
 };
 
-#endif
+#endif // MATRIX_IMPLEMENTATION_GRAPH_H
