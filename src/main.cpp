@@ -1,30 +1,21 @@
-#include <iostream>
-#include "Matrix_Implementation_Graph.h"
-#include "List_Implementation_Graph.h"
-
-using namespace std;
+/*
+ * main.cpp
+ *
+ * Description:
+ *  This file contains the entry point of the program.
+ *
+ *  - Uses selectAndCreateGraph() to prompt the user for graph properties and
+ *    create the appropriate graph implementation (adjacency matrix or list).
+ *  - Reads edges from the user and builds the graph.
+ *  - Displays the graph using the display() method.
+ *  - Cleans up dynamically allocated memory to prevent memory leaks.
+ */
+#include "Graph_Implementation_Selector.h"
 
 int main() {
-    int V, E;
-    cout << "Enter number of vertices: ";
-    cin >> V;
-
-    cout << "Enter number of edges: ";
-    cin >> E;
-
-    GraphMatrix matrixGraph(V);
-    GraphList listGraph(V);
-
-    cout << "Enter edges (u v):\n";
-    for (int i = 0; i < E; i++) {
-        int u, v;
-        cin >> u >> v;
-        matrixGraph.addEdge(u, v);
-        listGraph.addEdge(u, v);
-    }
-
-    matrixGraph.display();
-    listGraph.display();
-
+    IGraph* graph = selectAndCreateGraph();
+    graph->display();
+    delete graph;
     return 0;
 }
+
