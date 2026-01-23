@@ -38,7 +38,18 @@ A C++ project implementing graph data structures, designed for academic purposes
   - [`GraphFactory.h`](src/GraphFactory.h) — Declarations for the graph factory  
   - [`Graph_Bipartite.cpp`](src/Graph_Bipartite.cpp) — Bipartite graph checking implementation  
   - [`Graph_Bipartite.h`](src/Graph_Bipartite.h) — Declarations for bipartite checking  
+  - [`Cycle_Detection.cpp`](src/Cycle_Detection.cpp) — Cycle detection implementation  
+  - [`Cycle_Detection.h`](src/Cycle_Detection.h) — Declarations for cycle detection  
+  - [`Graph_Tree.cpp`](src/Graph_Tree.cpp) — Tree checking implementation  
+  - [`Graph_Tree.h`](src/Graph_Tree.h) — Declarations for tree checking  
+  - [`BFS_Traversal.cpp`](src/BFS_Traversal.cpp) — Breadth-first search traversal implementation  
+  - [`BFS_Traversal.h`](src/BFS_Traversal.h) — Declarations for BFS traversal  
+  - [`DFS_Traversal.cpp`](src/DFS_Traversal.cpp) — Depth-first search traversal implementation  
+  - [`DFS_Traversal.h`](src/DFS_Traversal.h) — Declarations for DFS traversal  
+  - [`Graph_Connectivity.cpp`](src/Graph_Connectivity.cpp) — Connectivity checking implementation  
+  - [`Graph_Connectivity.h`](src/Graph_Connectivity.h) — Declarations for connectivity checking  
   - [`IGraph.h`](src/IGraph.h) — Interface for graph implementations  
+ 
 
 
 > Total of 7 files. Clickable links work on GitHub to open the source code directly.

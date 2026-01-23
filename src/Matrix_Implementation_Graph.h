@@ -38,4 +38,4 @@ public:
     vector<int> getNeighbors(int u) const; // Return neighbors of vertex u
 };
 
-#endif // MATRIX_IMPLEMENTATION_GRAPH_H
+#endif 

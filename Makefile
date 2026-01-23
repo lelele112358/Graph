@@ -2,12 +2,8 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++17
 
-# Source files
-SRC = src/main.cpp \
-      src/GraphFactory.cpp \
-      src/Graph_Bipartite.cpp \
-      src/Matrix_Implementation_Graph.cpp \
-      src/List_Implementation_Graph.cpp
+# Source files (automatically find all .cpp in src/)
+SRC = $(wildcard src/*.cpp)
 
 # Object files
 OBJ = $(SRC:.cpp=.o)
