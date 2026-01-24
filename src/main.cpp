@@ -1,67 +1,88 @@
-/* ****
-*   File: main.cpp
-*   Description: Main program to create a graph via user input, display it,
-*                check if it is a tree, check for cycles, check bipartite,
-*                and perform BFS/DFS traversals.
-**** */
+//***************************************************************
+// File: main.cpp
+// Description:
+//   Main program to create a graph via user input, display it,
+//   check tree, cycles, bipartite, BFS/DFS, and Hall's theorem.
+//
+// Notes:
+//   - User chooses which operations to run
+//***************************************************************
 
 #include "GraphFactory.h"
 #include "Graph_Bipartite.h"
-#include "Cycle_Detection.h"
 #include "Graph_Tree.h"
+#include "Graph_Connectivity.h"
+#include "Cycle_Detection.h"
 #include "BFS_Traversal.h"
 #include "DFS_Traversal.h"
+#include "Halls_Marriage_Theorem.h"
 
 #include <iostream>
-
+#include <vector>
 using namespace std;
 
 int main() {
-    // 1. Create graph using factory based on user input
     IGraph* graph = selectAndCreateGraph();
 
     cout << "-----------------------------" << endl;
-
-    // 2. Display the created graph
     graph->display();
-
     cout << "-----------------------------" << endl;
 
-    // 3. Check if the graph is a tree
-    if (isTree(*graph)) {
-        cout << "The graph is a tree." << endl;
-        cout << "Since it is a tree, it is automatically bipartite and contains no cycles." << endl;
-    } else {
-        cout << "The graph is NOT a tree." << endl;
+    char doTree, doCycle, doBipartite, doTraversal, doHall;
+    cout << "Check if graph is a tree? (y/n): "; cin >> doTree;
+    cout << "Check if graph has cycles? (y/n): "; cin >> doCycle;
+    cout << "Check if graph is bipartite? (y/n): "; cin >> doBipartite;
+    cout << "Perform BFS/DFS traversals? (y/n): "; cin >> doTraversal;
+    cout << "Check Hall's Marriage Theorem? (y/n): "; cin >> doHall;
+    cout << "-----------------------------" << endl;
 
-    // 4. Check if the graph has cycles
-    if (hasCycle(*graph)) {
-        cout << "The graph contains at least one cycle." << endl;
-    } else {
-        cout << "The graph does NOT contain a cycle." << endl;
+    bool bipartite = false;
+
+    if (doTree == 'y' || doTree == 'Y') {
+        if (isTree(*graph)) {
+            cout << "Graph is a tree. It's acyclic and bipartite." << endl;
+        } else {
+            cout << "Graph is NOT a tree." << endl;
+        }
+        cout << "-----------------------------" << endl;
     }
 
-    // 5. Check if the graph is bipartite
-    if (isBipartite(*graph)) {
-        cout << "The graph is bipartite." << endl;
-    } else {
-        cout << "The graph is NOT bipartite." << endl;
+    if ((doCycle == 'y' || doCycle == 'Y') && !(doTree == 'y' || doTree == 'Y')) {
+        if (hasCycle(*graph)) {
+            cout << "Graph contains a cycle." << endl;
+        } else {
+            cout << "Graph does NOT contain a cycle." << endl;
+        }
+        cout << "-----------------------------" << endl;
     }
-}
 
+    if (doBipartite == 'y' || doBipartite == 'Y') {
+        bipartite = isBipartite(*graph);
+        cout << (bipartite ? "Graph is bipartite." : "Graph is NOT bipartite.") << endl;
+        cout << "-----------------------------" << endl;
+    }
 
-    cout << "-----------------------------" << endl;
+    if (doTraversal == 'y' || doTraversal == 'Y') {
+        BFS(*graph, 0);
+        DFS(*graph, 0);
+        cout << "-----------------------------" << endl;
+    }
 
-    // 6. Perform BFS traversal starting from vertex 0
-    BFS(*graph, 0);
+    if ((doHall == 'y' || doHall == 'Y') && bipartite) {
+        vector<int> left = getLeftPartition(*graph);
+        vector<int> right = getRightPartition(*graph);
 
-    // 7. Perform DFS traversal starting from vertex 0
-    DFS(*graph, 0);
+        if (hasPerfectMatchingHall(*graph, left, right)) {
+            cout << "Perfect matching exists." << endl;
+        } else {
+            cout << "No perfect matching exists." << endl;
+        }
+        cout << "-----------------------------" << endl;
+    } else if ((doHall == 'y' || doHall == 'Y') && !bipartite) {
+        cout << "Cannot apply Hall's theorem: graph not bipartite." << endl;
+        cout << "-----------------------------" << endl;
+    }
 
-    cout << "-----------------------------" << endl;
-
-    // 8. Free dynamically allocated graph
     delete graph;
-
     return 0;
 }

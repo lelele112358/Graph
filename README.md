@@ -2,20 +2,35 @@
 
 ![C++](https://img.shields.io/badge/Language-C++17-blue) ![Build](https://img.shields.io/badge/Build-Make-green) ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-A C++ project implementing graph data structures, designed for academic purposes and experimentation with graph algorithms.
+# Overview
+This project is a C++ graph algorithms library built to explore both graph theory concepts and clean software design.
+It supports multiple graph representations and a collection of classical graph algorithms, all organized using clear abstractions and modular files.
+The main goal of this project is to make it easy to add new algorithms, switch graph representations, and reuse code without rewriting existing logic.
 
 ---
 
-## 📌 Features
+## Features
 
-- Implements graphs using **adjacency lists** and **adjacency matrices**  
-- Supports **directed and undirected graphs**  
-- Dynamic insertion of vertices and edges  
-- Modular design for easy extension with graph algorithms  
+- Supports two graph representations
+  - Adjacency Matrix
+  - Adjacency List
+- Graph traversal algorithms
+  - Breadth-First Search (BFS)
+  - Depth-First Search (DFS)
+- Graph property checks
+  - Connectivity
+  - Cycle detection
+  - Tree validation
+  - Bipartite checking
+- Theoretical algorithms
+  - Hall’s Marriage Theorem for bipartite graphs
+- Clean object-oriented design
+  - Common graph interface (IGraph)
+  - Factory pattern for graph creation
 
 ---
 
-## 🛠 Technologies
+## Technologies
 
 - **Language:** C++  
 - **Compiler:** g++ (C++17 standard)  
@@ -23,40 +38,43 @@ A C++ project implementing graph data structures, designed for academic purposes
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
-- `README.md` — Project overview and instructions  
-- `.gitignore` — Specifies files to ignore in Git  
-- `Makefile` — Build and clean commands  
-- `src/` — Source code  
-  - [`main.cpp`](src/main.cpp) — Entry point  
-  - [`Matrix_Implementation_Graph.cpp`](src/Matrix_Implementation_Graph.cpp) — Matrix graph implementation  
-  - [`Matrix_Implementation_Graph.h`](src/Matrix_Implementation_Graph.h) — Matrix graph declarations  
-  - [`List_Implementation_Graph.cpp`](src/List_Implementation_Graph.cpp) — List graph implementation  
-  - [`List_Implementation_Graph.h`](src/List_Implementation_Graph.h) — List graph declarations  
-  - [`GraphFactory.cpp`](src/GraphFactory.cpp) — Factory for creating graph objects  
-  - [`GraphFactory.h`](src/GraphFactory.h) — Declarations for the graph factory  
-  - [`Graph_Bipartite.cpp`](src/Graph_Bipartite.cpp) — Bipartite graph checking implementation  
-  - [`Graph_Bipartite.h`](src/Graph_Bipartite.h) — Declarations for bipartite checking  
-  - [`Cycle_Detection.cpp`](src/Cycle_Detection.cpp) — Cycle detection implementation  
-  - [`Cycle_Detection.h`](src/Cycle_Detection.h) — Declarations for cycle detection  
-  - [`Graph_Tree.cpp`](src/Graph_Tree.cpp) — Tree checking implementation  
-  - [`Graph_Tree.h`](src/Graph_Tree.h) — Declarations for tree checking  
-  - [`BFS_Traversal.cpp`](src/BFS_Traversal.cpp) — Breadth-first search traversal implementation  
-  - [`BFS_Traversal.h`](src/BFS_Traversal.h) — Declarations for BFS traversal  
-  - [`DFS_Traversal.cpp`](src/DFS_Traversal.cpp) — Depth-first search traversal implementation  
-  - [`DFS_Traversal.h`](src/DFS_Traversal.h) — Declarations for DFS traversal  
-  - [`Graph_Connectivity.cpp`](src/Graph_Connectivity.cpp) — Connectivity checking implementation  
-  - [`Graph_Connectivity.h`](src/Graph_Connectivity.h) — Declarations for connectivity checking  
-  - [`IGraph.h`](src/IGraph.h) — Interface for graph implementations  
- 
+```css
+.
+├── README.md
+├── .gitignore
+├── Makefile
+├── include
+│   ├── IGraph.h
+│   ├── GraphFactory.h
+│   ├── Matrix_Implementation_Graph.h
+│   ├── List_Implementation_Graph.h
+│   ├── BFS_Traversal.h
+│   ├── DFS_Traversal.h
+│   ├── Graph_Connectivity.h
+│   ├── Cycle_Detection.h
+│   ├── Graph_Tree.h
+│   ├── Graph_Bipartite.h
+│   └── Halls_Marriage_Theorem.h
+└── src
+    ├── main.cpp
+    ├── GraphFactory.cpp
+    ├── Matrix_Implementation_Graph.cpp
+    ├── List_Implementation_Graph.cpp
+    ├── BFS_Traversal.cpp
+    ├── DFS_Traversal.cpp
+    ├── Graph_Connectivity.cpp
+    ├── Cycle_Detection.cpp
+    ├── Graph_Tree.cpp
+    ├── Graph_Bipartite.cpp
+    └── Halls_Marriage_Theorem.cpp
 
-
-> Total of 7 files. Clickable links work on GitHub to open the source code directly.
+```
 
 ---
 
-## ⚙️ Build & Run
+## Build & Run
 
 ### Using Make
 
@@ -84,7 +102,7 @@ make
 make clean
 ```
 
-## 📝 Example Run
+## Example Run
 
 ```yaml
 Enter number of vertices: 
@@ -114,6 +132,7 @@ Enter edges (u v):
 6 8
 6 9
 7 9
+-----------------------------
 Adjacency List:
 0: 1 -> 4 -> 5 -> NULL
 1: 0 -> 2 -> 6 -> NULL
@@ -125,7 +144,22 @@ Adjacency List:
 7: 2 -> 5 -> 9 -> NULL
 8: 3 -> 5 -> 6 -> NULL
 9: 4 -> 6 -> 7 -> NULL
+-----------------------------
+Check if graph is a tree? (y/n): y
+Check if graph has cycles? (y/n): y
+Check if graph is bipartite? (y/n): y
+Perform BFS/DFS traversals? (y/n): y
+Check Hall's Marriage Theorem? (y/n): y
+-----------------------------
+The graph is NOT a tree.
+-----------------------------
 The graph is NOT bipartite.
+-----------------------------
+BFS Traversal starting from vertex 0: 0 1 4 5 2 6 3 9 7 8 
+DFS Traversal starting from vertex 0: 0 1 2 3 4 9 6 8 5 7 
+-----------------------------
+Cannot apply Hall's theorem: graph is not bipartite.
+-----------------------------
 ```
 
 ```yaml
@@ -136,7 +170,7 @@ Enter number of edges:
 Is the graph directed? (y/n): 
 n
 Is the graph dense? (y/n): 
-y
+y 
 Is the graph dynamic? (y/n): 
 n
 Using adjacency matrix
@@ -156,6 +190,7 @@ Enter edges (u v):
 6 8
 6 9
 7 9
+-----------------------------
 Adjacency Matrix:
 0 1 0 0 1 1 0 0 0 0 
 1 0 1 0 0 0 1 0 0 0 
@@ -167,5 +202,20 @@ Adjacency Matrix:
 0 0 1 0 0 1 0 0 0 1 
 0 0 0 1 0 1 1 0 0 0 
 0 0 0 0 1 0 1 1 0 0 
+-----------------------------
+Check if graph is a tree? (y/n): y
+Check if graph has cycles? (y/n): y
+Check if graph is bipartite? (y/n): y
+Perform BFS/DFS traversals? (y/n): y
+Check Hall's Marriage Theorem? (y/n): y
+-----------------------------
+The graph is NOT a tree.
+-----------------------------
 The graph is NOT bipartite.
+-----------------------------
+BFS Traversal starting from vertex 0: 0 1 4 5 2 6 3 9 7 8 
+DFS Traversal starting from vertex 0: 0 1 2 3 4 9 6 8 5 7 
+-----------------------------
+Cannot apply Hall's theorem: graph is not bipartite.
+-----------------------------
 ```

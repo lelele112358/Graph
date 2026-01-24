@@ -1,31 +1,31 @@
-/* ****
-*   File: Graph_Connectivity.cpp
-*   Description: Implements connectivity checking using BFS traversal.
-**** */
+//***************************************************************
+// File: Graph_Connectivity.cpp
+// Description:
+//   Implements connectivity check using BFS traversal.
+//   Determines if all vertices are reachable from vertex 0.
+//
+// Notes:
+//   - Empty graph is considered connected
+//***************************************************************
 
 #include "Graph_Connectivity.h"
 #include <vector>
 #include <queue>
-
+#include <iostream>
 using namespace std;
 
 bool isConnected(const IGraph& graph) {
     int V = graph.getVertexCount();
-
-    // Convention: empty graph is connected
     if (V == 0) return true;
 
     vector<bool> visited(V, false);
     queue<int> q;
 
-    // Start BFS from vertex 0
     q.push(0);
     visited[0] = true;
 
     while (!q.empty()) {
-        int u = q.front();
-        q.pop();
-
+        int u = q.front(); q.pop();
         for (int v : graph.getNeighbors(u)) {
             if (!visited[v]) {
                 visited[v] = true;
@@ -34,11 +34,8 @@ bool isConnected(const IGraph& graph) {
         }
     }
 
-    // Check if all vertices were visited
     for (bool v : visited) {
-        if (!v)
-            return false;
+        if (!v) return false;
     }
-
     return true;
 }
