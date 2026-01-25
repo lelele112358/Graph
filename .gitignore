@@ -1,12 +1,34 @@
-# Compiled files
+# ============================
+# Build / Compiled artifacts
+# ============================
 *.o
 *.out
 *.exe
 graph
 
-# macOS
+# ============================
+# Graphviz outputs
+# ============================
+*.dot
+*.png
+*.pdf
+*.svg
+
+# ============================
+# macOS system files
+# ============================
 .DS_Store
 
-# Editor settings
+# ============================
+# Editor / IDE settings
+# ============================
 .vscode/
+.idea/
+
+# ============================
+# Temporary / backup files
+# ============================
+*~
+*.swp
+*.tmp
 

@@ -13,19 +13,32 @@ The goal is to make it easy to add new algorithms, switch graph representations,
 
 ## Features
 
-- Two graph representations:
-  - Adjacency **List** (best for sparse graphs)
-  - Adjacency **Matrix** (best for dense graphs / fast edge checks)
-- Directed and undirected graphs
-- Graph algorithms included:
-  - BFS traversal
-  - DFS traversal
-  - Cycle detection (directed + undirected)
-  - Connectivity check
-  - Tree check (connected + acyclic + undirected)
-  - Bipartite check + partitions
-  - Hall’s Marriage Theorem (naive subset check for small graphs)
-  - Euler path/circuit existence check
+### Graph Representations
+- Adjacency List
+  - Efficient for sparse graphs
+  - Fast neighbor iteration
+- Adjacency Matrix
+  - Efficient for dense graphs
+  - Constant-time edge existence checks
+### Graph Types
+- Directed graphs
+- Undirected graphs
+### Implemented Algorithms
+- Breadth-First Search (BFS)
+- Depth-First Search (DFS)
+- Cycle detection (directed and undirected)
+- Connectivity check
+- Tree check (connected + acyclic + undirected)
+- Bipartite graph check with partitions
+- Hall’s Marriage Theorem (naive subset check, small graphs)
+- Euler path / Euler circuit existence
+- Shortest path (unweighted) using BFS with path reconstruction
+- Topological sort (directed acyclic graphs)
+- Strongly Connected Components (SCC) using Kosaraju’s algorithm
+### Visualization
+- Graphviz (.dot) export
+  - Export graphs for visualization
+  - Compatible with Graphviz tools (dot, neato, etc.)
 
 ---
 
@@ -47,6 +60,7 @@ The goal is to make it easy to add new algorithms, switch graph representations,
 ├── include
 │   ├── IGraph.h
 │   ├── GraphFactory.h
+│   ├── Graph_CLI.h
 │   ├── Matrix_Implementation_Graph.h
 │   ├── List_Implementation_Graph.h
 │   ├── BFS_Traversal.h
@@ -56,10 +70,15 @@ The goal is to make it easy to add new algorithms, switch graph representations,
 │   ├── Graph_Tree.h
 │   ├── Graph_Bipartite.h
 │   ├── Halls_Marriage_Theorem.h
-│   └── Euler_Theorem.h
+│   ├── Euler_Theorem.h
+│   ├── Shortest_Path_Unweighted.h
+│   ├── Topological_Sort.h
+│   ├── SCC_Kosaraju.h
+│   └── Graphviz_Export.h
 └── src
     ├── main.cpp
     ├── GraphFactory.cpp
+    ├── Graph_CLI.cpp
     ├── Matrix_Implementation_Graph.cpp
     ├── List_Implementation_Graph.cpp
     ├── BFS_Traversal.cpp
@@ -69,7 +88,11 @@ The goal is to make it easy to add new algorithms, switch graph representations,
     ├── Graph_Tree.cpp
     ├── Graph_Bipartite.cpp
     ├── Halls_Marriage_Theorem.cpp
-    └── Euler_Theorem.cpp
+    ├── Euler_Theorem.cpp
+    ├── Shortest_Path_Unweighted.cpp
+    ├── Topological_Sort.cpp
+    ├── SCC_Kosaraju.cpp
+    └── Graphviz_Export.cpp
 
 ---
 
@@ -101,10 +124,19 @@ make
 make clean
 ```
 
+Graphviz Usage (Optional)
+To visualize a graph:
+1. Export a .dot file from the program
+2. Render it using Graphviz:
+
+```bash
+dot -Tpng graph.dot -o graph.png
+```
+
 ## Example Run
 
 ```yaml
-Enter number of vertices: 10
+Enter number of vertices: 10 
 Enter number of edges: 15
 Is the graph directed? (y/n): n
 Is the graph dense? (y/n): y
@@ -144,6 +176,11 @@ Check if graph has cycles? (y/n): y
 Check if graph is bipartite? (y/n): y
 Perform BFS/DFS traversals? (y/n): y
 Check Hall's Marriage Theorem? (y/n): y
+Check Euler path/circuit existence? (y/n): y
+Export graph to Graphviz (.dot)? (y/n): y
+Find shortest path using BFS? (y/n): y
+Perform topological sort? (y/n): y
+Find strongly connected components (SCC)? (y/n): y
 -----------------------------
 Graph is NOT a tree.
 -----------------------------
@@ -156,61 +193,28 @@ BFS Traversal starting from vertex 3: 3 2 4 8 1 7 0 9 5 6
 DFS Traversal starting from vertex 3: 3 2 1 0 4 9 6 8 5 7 
 -----------------------------
 Cannot apply Hall's theorem: graph not bipartite.
+-----------------------------
+Graph does NOT have an Euler path or Euler circuit.
+-----------------------------
+Enter output DOT filename (example: graph.dot): asdf.dot
+DOT file saved: asdf.dot
+Tip: dot -Tpng asdf.dot -o graph.png
+-----------------------------
+Enter start vertex: 3
+Enter target vertex: 5
+Shortest distance from 3 to 5 is 2 edges.
+Path: 3 -> 8 -> 5
+-----------------------------
+Topological sort not possible (graph is undirected or contains a cycle).
+-----------------------------
+SCC is mainly for directed graphs (undirected SCC = connected components).
+Strongly Connected Components (1):
+SCC 0: 0 1 2 3 4 9 6 8 5 7 
 -----------------------------
 ```
 
-```yaml
-Enter number of vertices: 10
-Enter number of edges: 15
-Is the graph directed? (y/n): n
-Is the graph dense? (y/n): n
-Is the graph dynamic? (y/n): n
-Using adjacency list
-Enter edges (u v):
-0 1
-0 4
-0 5
-1 2
-1 6
-2 3
-2 7
-3 4
-3 8
-4 9
-5 7
-5 8
-6 8
-6 9
-7 9
------------------------------
-Adjacency List:
-0: 1 -> 4 -> 5 -> NULL
-1: 0 -> 2 -> 6 -> NULL
-2: 1 -> 3 -> 7 -> NULL
-3: 2 -> 4 -> 8 -> NULL
-4: 0 -> 3 -> 9 -> NULL
-5: 0 -> 7 -> 8 -> NULL
-6: 1 -> 8 -> 9 -> NULL
-7: 2 -> 5 -> 9 -> NULL
-8: 3 -> 5 -> 6 -> NULL
-9: 4 -> 6 -> 7 -> NULL
------------------------------
-Check if graph is a tree? (y/n): y
-Check if graph has cycles? (y/n): y
-Check if graph is bipartite? (y/n): y
-Perform BFS/DFS traversals? (y/n): y
-Check Hall's Marriage Theorem? (y/n): y
------------------------------
-Graph is NOT a tree.
------------------------------
-Graph contains a cycle.
------------------------------
-Graph is NOT bipartite.
------------------------------
-Enter starting vertex for BFS/DFS: 3
-BFS Traversal starting from vertex 3: 3 2 4 8 1 7 0 9 5 6 
-DFS Traversal starting from vertex 3: 3 2 1 0 4 9 6 8 5 7 
------------------------------
-Cannot apply Hall's theorem: graph not bipartite.
------------------------------
-```
+## Notes
+- The CLI is intentionally separated from algorithm logic
+- Algorithms work with any graph implementing IGraph
+- Visualization files (.dot, .png) are ignored by Git
+- The project is designed for experimentation and extension
