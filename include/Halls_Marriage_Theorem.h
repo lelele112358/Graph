@@ -5,7 +5,7 @@
 //   bipartite graph.
 //
 // Notes:
-//   - Naive approach, suitable for small partitions
+//   - Naive subset checking (exponential), intended for small graphs
 //***************************************************************
 
 #ifndef HALLS_MARRIAGE_THEOREM_H
@@ -15,7 +15,28 @@
 #include <vector>
 using namespace std;
 
+// Function: satisfiesHallCondition
+// Parameters:
+// const IGraph& graph - graph reference (assumed bipartite)
+// const vector<int>& partition - one side of the bipartition
+// Output:
+// Returns true if Hall's condition holds for this side, false otherwise
+// Notes:
+// - This version assumes "the other side" is all vertices NOT in partition.
+// - For best correctness, use hasPerfectMatchingHall() with both partitions.
 bool satisfiesHallCondition(const IGraph& graph, const vector<int>& partition);
-bool hasPerfectMatchingHall(const IGraph& graph, const vector<int>& leftPartition, const vector<int>& rightPartition);
+
+// Function: hasPerfectMatchingHall
+// Parameters:
+// const IGraph& graph - graph reference (must be bipartite)
+// const vector<int>& leftPartition - left side vertices
+// const vector<int>& rightPartition - right side vertices
+// Output:
+// Returns true if a perfect matching must exist (Hall), false otherwise
+// Notes:
+// - Checks Hall only on the left side (the standard usage)
+bool hasPerfectMatchingHall(const IGraph& graph,
+                           const vector<int>& leftPartition,
+                           const vector<int>& rightPartition);
 
 #endif

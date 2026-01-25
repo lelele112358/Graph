@@ -1,81 +1,77 @@
 //***************************************************************
 // File: GraphFactory.cpp
 // Description:
-//   Factory to create a graph dynamically using list or matrix.
-//   Chooses implementation based on density and dynamic flag.
+//   Factory that creates a graph dynamically (list or matrix)
+//   based on user input.
 //
 // Notes:
-//   - Adapters wrap ListGraph/MatrixGraph into IGraph interface
+//   - Matrix is chosen for dense, non-dynamic graphs
+//   - List is chosen otherwise
 //***************************************************************
 
 #include "GraphFactory.h"
 #include "List_Implementation_Graph.h"
 #include "Matrix_Implementation_Graph.h"
+
 #include <iostream>
 using namespace std;
 
-enum class GraphType { MATRIX, LIST };
-
-static GraphType chooseGraphImplementation(bool isDense, bool isDynamic) {
-    if (isDense && !isDynamic) return GraphType::MATRIX;
-    return GraphType::LIST;
+// Function: chooseGraphImplementation
+// Parameters:
+// bool isDense - true if graph is dense
+// bool isDynamic - true if graph changes frequently
+// Output:
+// Returns true if matrix should be used, false for list
+static bool chooseMatrix(bool isDense, bool isDynamic) {
+    if (isDense && !isDynamic) return true;
+    return false;
 }
 
-/* ---------- List Adapter ---------- */
-class ListGraphAdapter : public IGraph {
-private:
-    ListGraph graph;
-public:
-    ListGraphAdapter(int V, bool directed) : graph(V, directed) {}
-    bool addEdge(int u, int v) override { return graph.addEdge(u, v); }
-    void display() const override { graph.display(); }
-    int getVertexCount() const override { return graph.getVertexCount(); }
-    bool isDirected() const override { return graph.isDirected(); }
-    vector<int> getNeighbors(int u) const override { return graph.getNeighbors(u); }
-};
-
-/* ---------- Matrix Adapter ---------- */
-class MatrixGraphAdapter : public IGraph {
-private:
-    MatrixGraph graph;
-public:
-    MatrixGraphAdapter(int V, bool directed) : graph(V, directed) {}
-    bool addEdge(int u, int v) override { return graph.addEdge(u, v); }
-    void display() const override { graph.display(); }
-    int getVertexCount() const override { return graph.getVertexCount(); }
-    bool isDirected() const override { return graph.isDirected(); }
-    vector<int> getNeighbors(int u) const override { return graph.getNeighbors(u); }
-};
-
-/* ---------- Factory Function ---------- */
+// Function: selectAndCreateGraph
+// Parameters:
+// None
+// Output:
+// Returns a dynamically allocated IGraph* based on user choices
+// Notes:
+// - Caller must delete the returned pointer
 IGraph* selectAndCreateGraph() {
-    int V, E; char dir, dense, dynamic;
+    int V, E;
+    char dir, dense, dynamic;
 
-    cout << "Enter number of vertices: "; cin >> V;
-    cout << "Enter number of edges: "; cin >> E;
-    cout << "Is the graph directed? (y/n): "; cin >> dir;
-    cout << "Is the graph dense? (y/n): "; cin >> dense;
-    cout << "Is the graph dynamic? (y/n): "; cin >> dynamic;
+    cout << "Enter number of vertices: ";
+    cin >> V;
+
+    cout << "Enter number of edges: ";
+    cin >> E;
+
+    cout << "Is the graph directed? (y/n): ";
+    cin >> dir;
+
+    cout << "Is the graph dense? (y/n): ";
+    cin >> dense;
+
+    cout << "Is the graph dynamic? (y/n): ";
+    cin >> dynamic;
 
     bool isDirected = (dir == 'y' || dir == 'Y');
     bool isDense = (dense == 'y' || dense == 'Y');
     bool isDynamic = (dynamic == 'y' || dynamic == 'Y');
 
-    GraphType type = chooseGraphImplementation(isDense, isDynamic);
     IGraph* graph = nullptr;
 
-    if (type == GraphType::MATRIX) {
+    if (chooseMatrix(isDense, isDynamic)) {
         cout << "Using adjacency matrix" << endl;
-        graph = new MatrixGraphAdapter(V, isDirected);
+        graph = new MatrixGraph(V, isDirected);
     } else {
         cout << "Using adjacency list" << endl;
-        graph = new ListGraphAdapter(V, isDirected);
+        graph = new ListGraph(V, isDirected);
     }
 
     cout << "Enter edges (u v):" << endl;
     for (int i = 0; i < E; i++) {
         int u, v;
         cin >> u >> v;
+
         if (!graph->addEdge(u, v)) {
             cout << "Invalid edge, re-enter" << endl;
             i--;

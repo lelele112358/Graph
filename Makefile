@@ -1,48 +1,33 @@
 #***************************************************************
-# Compiler and flags
+# File: Makefile
+# Description:
+#   Build rules for the Graph project.
+#
+# Notes:
+#   - Compiles all .cpp files inside src/
+#   - Uses headers from include/
+#   - Output executable: graph
 #***************************************************************
+
 CXX = g++
-CXXFLAGS = -Wall -Wextra -std=c++17 -Iinclude   # <-- add -Iinclude to search headers
-
-#***************************************************************
-# Source files (automatically find all .cpp in src/)
-#***************************************************************
-SRC = $(wildcard src/*.cpp)
-
-#***************************************************************
-# Object files
-#***************************************************************
-OBJ = $(SRC:.cpp=.o)
-
-#***************************************************************
-# Output executable
-#***************************************************************
+CXXFLAGS = -Wall -Wextra -Wpedantic -std=c++17 -O2 -Iinclude
 TARGET = graph
 
-#***************************************************************
-# Default target
-#***************************************************************
+SOURCES = $(shell find src -name "*.cpp")
+OBJECTS = $(SOURCES:.cpp=.o)
+
 all: $(TARGET)
 
-#***************************************************************
-# Link object files to create executable
-#***************************************************************
-$(TARGET): $(OBJ)
-	$(CXX) $(CXXFLAGS) $^ -o $@
+$(TARGET): $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $(TARGET)
 
-#***************************************************************
-# Compile source files into object files
-#***************************************************************
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-#***************************************************************
-# Clean up compiled files
-#***************************************************************
 clean:
-	rm -f $(OBJ) $(TARGET)
+	rm -f $(TARGET) $(OBJECTS)
 
-#***************************************************************
-# Phony targets
-#***************************************************************
-.PHONY: all clean
+run: all
+	./$(TARGET)
+
+.PHONY: all clean run. 

@@ -1,11 +1,12 @@
 //***************************************************************
 // File: GraphFactory.h
 // Description:
-//   Declares the factory function to create a graph and return
-//   pointer to IGraph. Supports adjacency list or matrix.
+//   Declares the factory function that creates a graph based on
+//   user input (list vs matrix).
 //
 // Notes:
-//   - User chooses graph properties interactively
+//   - Returns IGraph* allocated with new
+//   - Caller must delete the returned object
 //***************************************************************
 
 #ifndef GRAPH_FACTORY_H
@@ -13,6 +14,11 @@
 
 #include "IGraph.h"
 
+// Function: selectAndCreateGraph
+// Parameters:
+// None
+// Output:
+// Returns a dynamically allocated graph (IGraph*) built from user input
 IGraph* selectAndCreateGraph();
 
 #endif

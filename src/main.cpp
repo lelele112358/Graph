@@ -2,10 +2,12 @@
 // File: main.cpp
 // Description:
 //   Main program to create a graph via user input, display it,
-//   check tree, cycles, bipartite, BFS/DFS, and Hall's theorem.
+//   and optionally run algorithm checks (tree, cycle, bipartite,
+//   traversals, and Hall's theorem).
 //
 // Notes:
 //   - User chooses which operations to run
+//   - Hall's theorem requires the graph to be bipartite
 //***************************************************************
 
 #include "GraphFactory.h"
@@ -21,6 +23,11 @@
 #include <vector>
 using namespace std;
 
+// Function: main
+// Parameters:
+// None
+// Output:
+// Runs the interactive console program and prints results
 int main() {
     IGraph* graph = selectAndCreateGraph();
 
@@ -40,14 +47,14 @@ int main() {
 
     if (doTree == 'y' || doTree == 'Y') {
         if (isTree(*graph)) {
-            cout << "Graph is a tree. It's acyclic and bipartite." << endl;
+            cout << "Graph is a tree (connected + acyclic + undirected)." << endl;
         } else {
             cout << "Graph is NOT a tree." << endl;
         }
         cout << "-----------------------------" << endl;
     }
 
-    if ((doCycle == 'y' || doCycle == 'Y') && !(doTree == 'y' || doTree == 'Y')) {
+    if (doCycle == 'y' || doCycle == 'Y') {
         if (hasCycle(*graph)) {
             cout << "Graph contains a cycle." << endl;
         } else {
@@ -63,24 +70,30 @@ int main() {
     }
 
     if (doTraversal == 'y' || doTraversal == 'Y') {
-        BFS(*graph, 0);
-        DFS(*graph, 0);
+        int start;
+        cout << "Enter starting vertex for BFS/DFS: ";
+        cin >> start;
+
+        BFS(*graph, start);
+        DFS(*graph, start);
         cout << "-----------------------------" << endl;
     }
 
-    if ((doHall == 'y' || doHall == 'Y') && bipartite) {
-        vector<int> left = getLeftPartition(*graph);
-        vector<int> right = getRightPartition(*graph);
-
-        if (hasPerfectMatchingHall(*graph, left, right)) {
-            cout << "Perfect matching exists." << endl;
+    if (doHall == 'y' || doHall == 'Y') {
+        if (!bipartite) {
+            cout << "Cannot apply Hall's theorem: graph not bipartite." << endl;
+            cout << "-----------------------------" << endl;
         } else {
-            cout << "No perfect matching exists." << endl;
+            vector<int> left = getLeftPartition(*graph);
+            vector<int> right = getRightPartition(*graph);
+
+            if (hasPerfectMatchingHall(*graph, left, right)) {
+                cout << "Hall check passed: a perfect matching must exist." << endl;
+            } else {
+                cout << "Hall check failed: no perfect matching guaranteed." << endl;
+            }
+            cout << "-----------------------------" << endl;
         }
-        cout << "-----------------------------" << endl;
-    } else if ((doHall == 'y' || doHall == 'Y') && !bipartite) {
-        cout << "Cannot apply Hall's theorem: graph not bipartite." << endl;
-        cout << "-----------------------------" << endl;
     }
 
     delete graph;

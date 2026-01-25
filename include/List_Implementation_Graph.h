@@ -1,53 +1,93 @@
 //***************************************************************
 // File: List_Implementation_Graph.h
 // Description:
-//   Header file for ListGraph class implementing a graph
-//   using adjacency lists. Provides methods for adding edges,
-//   displaying the graph, and accessing neighbors.
+//   Adjacency list graph implementation that conforms to IGraph.
+//   This version is memory-efficient for sparse graphs.
 //
 // Notes:
-//   - Efficient for sparse graphs
 //   - Works for directed and undirected graphs
+//   - Stores neighbors in adjacency lists
 //***************************************************************
 
 #ifndef LIST_IMPLEMENTATION_GRAPH_H
 #define LIST_IMPLEMENTATION_GRAPH_H
 
+#include "IGraph.h"
 #include <vector>
 #include <iostream>
 using namespace std;
 
-/* ---------- ListGraph Class ---------- */
-class ListGraph {
+class ListGraph : public IGraph {
 private:
-    int V;                    // Number of vertices
-    bool directed;            // true if directed
-    vector<vector<int>> adj;  // adjacency list
+    int V;
+    bool directed;
+    vector<vector<int>> adj;
 
-    bool isValidVertex(int v) const;    // Helper to check vertex index
-    bool edgeExists(int u, int v) const; // Helper to check duplicate edge
+    // Function: isValidVertex
+    // Parameters:
+    // int v - vertex index
+    // Output:
+    // Returns true if v is within [0, V-1]
+    bool isValidVertex(int v) const;
 
 public:
-    // Function: ListGraph constructor
+    // Function: ListGraph (Constructor)
     // Parameters:
-    //   int vertices - number of vertices
-    //   bool isDirected - true if graph is directed
+    // int vertices - number of vertices
+    // bool isDirected - true for directed graphs
+    // Output:
+    // Constructs an empty adjacency list graph
     ListGraph(int vertices, bool isDirected);
 
     // Function: addEdge
-    // Parameters: int u, int v
-    // Output: adds edge u -> v
-    bool addEdge(int u, int v);
+    // Parameters:
+    // int u - source vertex
+    // int v - destination vertex
+    // Output:
+    // Returns true if edge is added successfully, false if invalid
+    bool addEdge(int u, int v) override;
 
     // Function: display
-    // Parameters: none
-    // Output: prints adjacency list to console
-    void display() const;
+    // Parameters:
+    // None
+    // Output:
+    // Prints the adjacency list to standard output
+    void display() const override;
 
-    // Accessors
-    int getVertexCount() const;
-    bool isDirected() const;
-    vector<int> getNeighbors(int u) const;
+    // Function: getVertexCount
+    // Parameters:
+    // None
+    // Output:
+    // Returns the number of vertices in the graph
+    int getVertexCount() const override;
+
+    // Function: isDirected
+    // Parameters:
+    // None
+    // Output:
+    // Returns true if graph is directed
+    bool isDirected() const override;
+
+    // Function: getNeighbors
+    // Parameters:
+    // int u - vertex to query
+    // Output:
+    // Returns a vector of neighbors of u (empty if u invalid)
+    vector<int> getNeighbors(int u) const override;
+
+    // Function: getOutDegree
+    // Parameters:
+    // int v - vertex to query
+    // Output:
+    // Returns out-degree of v (0 if invalid)
+    int getOutDegree(int v) const override;
+
+    // Function: getInDegree
+    // Parameters:
+    // int v - vertex to query
+    // Output:
+    // Returns in-degree of v (0 if invalid)
+    int getInDegree(int v) const override;
 };
 
-#endif // LIST_IMPLEMENTATION_GRAPH_H
+#endif
