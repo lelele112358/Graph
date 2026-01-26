@@ -94,7 +94,7 @@ The goal is to make it easy to add new algorithms, switch graph representations,
     ├── SCC_Kosaraju.cpp
     └── Graphviz_Export.cpp
 
----
+```
 
 ## Build & Run
 
@@ -136,7 +136,7 @@ dot -Tpng graph.dot -o graph.png
 ## Example Run
 
 ```yaml
-Enter number of vertices: 10 
+Enter number of vertices: 10
 Enter number of edges: 15
 Is the graph directed? (y/n): n
 Is the graph dense? (y/n): y
@@ -181,6 +181,7 @@ Export graph to Graphviz (.dot)? (y/n): y
 Find shortest path using BFS? (y/n): y
 Perform topological sort? (y/n): y
 Find strongly connected components (SCC)? (y/n): y
+Check Dirac/Ore Hamiltonian theorems? (y/n): y
 -----------------------------
 Graph is NOT a tree.
 -----------------------------
@@ -210,6 +211,13 @@ Topological sort not possible (graph is undirected or contains a cycle).
 SCC is mainly for directed graphs (undirected SCC = connected components).
 Strongly Connected Components (1):
 SCC 0: 0 1 2 3 4 9 6 8 5 7 
+-----------------------------
+Hamiltonian Theorem Check (Dirac + Ore)
+Dirac's Theorem: FAILED
+  Minimum degree = 3
+Ore's Theorem: FAILED
+  Ore violations = 30
+Result: Not guaranteed by Dirac or Ore.
 -----------------------------
 ```
 

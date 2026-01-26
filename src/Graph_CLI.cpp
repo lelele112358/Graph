@@ -16,6 +16,7 @@
 //   - Unweighted shortest path (BFS distance + path reconstruction)
 //   - Topological sort (directed DAGs)
 //   - Strongly Connected Components (Kosaraju)
+//   - Hamiltonian sufficient conditions (Dirac + Ore)
 //
 // Notes:
 //   - This file is UI-focused (input/output).
@@ -35,6 +36,7 @@
 #include "Shortest_Path_Unweighted.h"
 #include "Topological_Sort.h"
 #include "SCC_Kosaraju.h"
+#include "Hamiltonian_Theorem.h"
 
 #include <iostream>
 #include <vector>
@@ -55,8 +57,6 @@ static void printDivider() {
 // const string& question - prompt to show the user
 // Output:
 // Returns true if user enters y/Y, otherwise false
-// Notes:
-// - Keeps the CLI code readable and consistent
 static bool askYesNo(const string& question) {
     char c;
     cout << question;
@@ -119,8 +119,6 @@ static void runBipartiteCheck(const IGraph& graph, bool& outBipartite) {
 // const IGraph& graph - graph reference
 // Output:
 // Runs BFS and DFS starting from a user-chosen vertex
-// Notes:
-// - BFS() and DFS() already print their own labels and traversal order
 static void runTraversals(const IGraph& graph) {
     int start;
     cout << "Enter starting vertex for BFS/DFS: ";
@@ -262,10 +260,36 @@ static void runSCCKosaraju(const IGraph& graph) {
     cout << "Strongly Connected Components (" << (int)sccs.size() << "):" << endl;
     for (int i = 0; i < (int)sccs.size(); i++) {
         cout << "SCC " << i << ": ";
-        for (int v : sccs[i]) {
-            cout << v << " ";
-        }
+        for (int v : sccs[i]) cout << v << " ";
         cout << endl;
+    }
+}
+
+// Function: runHamiltonianTheoremCheck
+// Parameters:
+// const IGraph& graph - graph reference
+// Output:
+// Prints whether Dirac's or Ore's theorem guarantees a Hamiltonian cycle
+static void runHamiltonianTheoremCheck(const IGraph& graph) {
+    HamiltonianTheoremReport r = analyzeHamiltonianTheorems(graph);
+
+    cout << "Hamiltonian Theorem Check (Dirac + Ore)" << endl;
+
+    if (!r.applicable) {
+        cout << "Theorems not applicable (requires simple, undirected graph with n >= 3)." << endl;
+        return;
+    }
+
+    cout << "Dirac's Theorem: " << (r.dirac.holds ? "PASSED" : "FAILED") << endl;
+    cout << "  Minimum degree = " << r.dirac.minDegree << endl;
+
+    cout << "Ore's Theorem: " << (r.ore.holds ? "PASSED" : "FAILED") << endl;
+    cout << "  Ore violations = " << r.ore.violations << endl;
+
+    if (r.guaranteedHamiltonian) {
+        cout << "Result: Hamiltonian cycle is GUARANTEED by theorem." << endl;
+    } else {
+        cout << "Result: Not guaranteed by Dirac or Ore." << endl;
     }
 }
 
@@ -289,58 +313,21 @@ void runGraphCLI(IGraph& graph) {
     bool doShortest  = askYesNo("Find shortest path using BFS? (y/n): ");
     bool doTopo      = askYesNo("Perform topological sort? (y/n): ");
     bool doSCC       = askYesNo("Find strongly connected components (SCC)? (y/n): ");
+    bool doHamilton  = askYesNo("Check Dirac/Ore Hamiltonian theorems? (y/n): ");
 
     printDivider();
 
     bool bipartite = false;
 
-    if (doTree) {
-        runTreeCheck(graph);
-        printDivider();
-    }
-
-    if (doCycle) {
-        runCycleCheck(graph);
-        printDivider();
-    }
-
-    if (doBipartite) {
-        runBipartiteCheck(graph, bipartite);
-        printDivider();
-    }
-
-    if (doTraversal) {
-        runTraversals(graph);
-        printDivider();
-    }
-
-    if (doHall) {
-        runHallCheck(graph, bipartite);
-        printDivider();
-    }
-
-    if (doEuler) {
-        runEulerCheck(graph);
-        printDivider();
-    }
-
-    if (doDot) {
-        runGraphvizExport(graph);
-        printDivider();
-    }
-
-    if (doShortest) {
-        runShortestPath(graph);
-        printDivider();
-    }
-
-    if (doTopo) {
-        runTopologicalSort(graph);
-        printDivider();
-    }
-
-    if (doSCC) {
-        runSCCKosaraju(graph);
-        printDivider();
-    }
+    if (doTree)      { runTreeCheck(graph); printDivider(); }
+    if (doCycle)    { runCycleCheck(graph); printDivider(); }
+    if (doBipartite){ runBipartiteCheck(graph, bipartite); printDivider(); }
+    if (doTraversal){ runTraversals(graph); printDivider(); }
+    if (doHall)     { runHallCheck(graph, bipartite); printDivider(); }
+    if (doEuler)    { runEulerCheck(graph); printDivider(); }
+    if (doDot)      { runGraphvizExport(graph); printDivider(); }
+    if (doShortest) { runShortestPath(graph); printDivider(); }
+    if (doTopo)     { runTopologicalSort(graph); printDivider(); }
+    if (doSCC)      { runSCCKosaraju(graph); printDivider(); }
+    if (doHamilton) { runHamiltonianTheoremCheck(graph); printDivider(); }
 }
